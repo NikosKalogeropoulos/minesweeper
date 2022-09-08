@@ -5,7 +5,7 @@ class Square
   attr_accessor :flagged
   def initialize()
     @value = 0
-    @reveal = false
+    @reveal = true
     @flagged = false
   end
 
@@ -19,6 +19,10 @@ class Square
 
   def place_bomb
     @value = BOMB
+  end
+
+  def found_neighbor_bomb
+    @value += 1
   end
 
   def to_s
