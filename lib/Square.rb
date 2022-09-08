@@ -2,8 +2,8 @@ class Square
   BOMB = 'B'
 
   attr_accessor :flagged
-  def initialize(value = 0, reveal = false)
-    @value = value
+  def initialize()
+    @value = 0
     @reveal = false
     @flagged = false
   end
@@ -14,6 +14,10 @@ class Square
 
   def has_bomb?
     @value == Square::BOMB
+  end
+
+  def place_bomb
+    @value = BOMB
   end
 
 end
