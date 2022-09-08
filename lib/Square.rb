@@ -1,5 +1,6 @@
 class Square
   BOMB = 'B'
+  HIDDEN= 'X'
 
   attr_accessor :flagged
   def initialize()
@@ -18,6 +19,14 @@ class Square
 
   def place_bomb
     @value = BOMB
+  end
+
+  def to_s
+    if @reveal
+      return @value.to_s
+    else
+      return Square::HIDDEN
+    end
   end
 
 end
