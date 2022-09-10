@@ -9,6 +9,42 @@ class Board
     seed_board
   end
 
+  def play_game
+    self.display
+    loop do
+      action, position = prompt
+      case action
+      when "f"
+        flag_bomb(position)
+      when "r"
+        reveal(position)
+      else
+        puts "wrong input"
+      end
+      self.display
+      puts "congrats mate" if won?
+    end
+  end
+
+  def won?
+    @board.each do |row|
+      row.each do |square|
+        next if square.has_bomb?
+        return false if not square.revealed?
+      end
+    end
+  end
+
+  # user gives input as "f 1 2" or "r 1 2" where f is flag and r is reveal
+  # doesn't check for correct input
+  def prompt
+    puts "Give an input (ex f/r 1 2)"
+    input = gets.chomp.split(" ")
+    pos = [input[1].to_i, input[2].to_i]
+    action = input[0].downcase
+    [action, pos]
+  end
+
   def [](pos)
     row, col = pos
     @board[row][col]
@@ -47,6 +83,7 @@ class Board
   def game_over
     puts "You've lost the game"
     display_lose
+    exit
   end
 
   # Using breadth first to search for all the squares that are to be revealed
@@ -160,9 +197,5 @@ end
 
 if __FILE__ == $PROGRAM_NAME
   board = Board.new
-  board.display
-  board.reveal([0, 0])
-  board.flag_bomb([0, 0])
-  puts puts
-  board.display
+  board.play_game
 end
