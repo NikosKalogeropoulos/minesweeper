@@ -1,11 +1,11 @@
 class Square
-  BOMB = 'B'
-  HIDDEN= 'X'
+  BOMB = "B"
+  HIDDEN = "X"
 
   attr_accessor :flagged
   def initialize()
     @value = 0
-    @reveal = true
+    @reveal = false
     @flagged = false
   end
 
@@ -32,5 +32,4 @@ class Square
       return Square::HIDDEN
     end
   end
-
 end
