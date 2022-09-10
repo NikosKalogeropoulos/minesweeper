@@ -21,6 +21,51 @@ class Board
     end
   end
 
+  def reveal(square_pos)
+    square = self[square_pos]
+    game_over if square.has_bomb?
+    reveal_squares(square_pos)
+  end
+
+  # Using breadth first to search for all the squares that are to be revealed
+  def reveal_squares(square_pos)
+    squares_seen = [square_pos]
+    queue = [square_pos]
+    while not queue.empty?
+      square_pos = queue[0]
+      self[square_pos].reveal
+      if find_neighbor_squares(square_pos, squares_seen)
+        neighbor_squares = find_neighbor_squares(square_pos, squares_seen)
+        queue += neighbor_squares
+        squares_seen += neighbor_squares
+      end
+      queue.shift
+    end
+  end
+
+  def find_neighbor_squares(square_pos, squares_seen)
+    neighbor_squares = []
+    current_square_row, current_square_col = square_pos
+    row_range, col_range = valid_range(square_pos)
+    row_range.each do |idx|
+      col_range.each do |ydx|
+        neighbor_square_position = [
+          current_square_row + idx,
+          current_square_col + ydx
+        ]
+        # if one neighbor square has a bomb then we don't want to reveal any squares, so we return nothing
+        return if self[neighbor_square_position].has_bomb?
+        # if square_pos is the same as neighbor_square_position next loop or if we've seen already this square check for another neighbor
+        if square_pos.equal?(self[neighbor_square_position]) ||
+             squares_seen.include?(neighbor_square_position)
+          next
+        end
+        neighbor_squares << [current_square_row + idx, current_square_col + ydx]
+      end
+    end
+    neighbor_squares
+  end
+
   private
 
   def seed_board
@@ -93,5 +138,8 @@ end
 
 if __FILE__ == $PROGRAM_NAME
   board = Board.new
+  board.display
+  board.reveal([0, 0])
+  puts puts
   board.display
 end
