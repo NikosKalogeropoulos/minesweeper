@@ -2,7 +2,7 @@ class Square
   BOMB = "B"
   HIDDEN = "X"
 
-  attr_accessor :flagged
+  attr_accessor :flagged, :reveal
   def initialize()
     @value = 0
     @reveal = false

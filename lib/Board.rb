@@ -21,10 +21,25 @@ class Board
     end
   end
 
+  def display_lose
+    @board.each do |row|
+      row.each do |square|
+        square.reveal = true if square.has_bomb?
+        print "#{square} "
+      end
+      puts
+    end
+  end
+
   def reveal(square_pos)
     square = self[square_pos]
     game_over if square.has_bomb?
     reveal_squares(square_pos)
+  end
+
+  def game_over
+    puts "You've lost the game"
+    display_lose
   end
 
   # Using breadth first to search for all the squares that are to be revealed
