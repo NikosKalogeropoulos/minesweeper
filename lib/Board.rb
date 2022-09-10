@@ -33,8 +33,15 @@ class Board
 
   def reveal(square_pos)
     square = self[square_pos]
+    return if self[square_pos].flagged?
     game_over if square.has_bomb?
     reveal_squares(square_pos)
+  end
+
+  def flag_bomb(square_pos)
+    return if self[square_pos].revealed?
+
+    self[square_pos].flagged = !self[square_pos].flagged
   end
 
   def game_over
@@ -155,6 +162,7 @@ if __FILE__ == $PROGRAM_NAME
   board = Board.new
   board.display
   board.reveal([0, 0])
+  board.flag_bomb([0, 0])
   puts puts
   board.display
 end
